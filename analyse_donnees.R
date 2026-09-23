@@ -191,3 +191,72 @@ pie(table(data$target), main = "Repartition des patients selon l'apparition d'un
     cex.main = 1.2,
     )
 
+
+
+
+#Boite a moustache (Variable quantiatives)
+
+## Variage age 
+boxplot(data$age, 
+        ylab = "Age", main = "Boite a moustache de la population selon l'age",
+        color ="#e63946",
+        las = 1,
+        cex.main = 1.7,
+        cex.lab = 1.2,
+        sub = "Donnees: Heart Disease Data Set(UCI Machine Learning)",
+        notch = TRUE,
+        ylim = c(20,80)
+        )
+
+
+
+#Histogramme (Variable quantitatives)
+
+graph3 <- hist(data$trestbps,
+     xlab = "Tension arterielle au repos",
+     ylab = "Effectifs",
+     main = "Repartition des patients selon la tension arterielle au repos",
+     las = 1,
+     sub = "Donnees: Heart Disease Data Set (UCI Machine Learning)",
+     col ="lightslateblue",
+     ylim = c(0,80),
+     xlim = c(80,200),
+     cex.main = 1.6,
+     cex.lab = 1.2)
+
+
+text(x= graph3$mids, graph3$counts, labels = graph3$counts, adj = c(0.5, -0.5))
+
+
+### Graphiques croises
+  ##Diagramme a barre croisse
+graph4 <- barplot(table(data$target, data$Sex),
+        beside = TRUE,
+        col = c("#003049","#d62828"),
+        xlab = "Sexe",
+        ylab = "Patients",
+        las = 1,
+        main = "Repartition des patients selon la presence d'une maladie cardiovasculaire \n et le sexe",
+        ylim = c(0,150),
+        cex.main = 1.2,
+        cex.lab = 1.2
+        )
+legend("top", legend = levels(data$target), fill = c("#003049","#d62828"), title = "Maladie cardiovasculaire",horiz = TRUE)
+text(x = graph4, y = table(data$target, data$Sex) +10, labels = as.character(table(data$target,data$Sex)), cex = 1.1,font = 3 )
+
+
+graph5 <- barplot(table(data$target, data$cp),
+                  beside = TRUE,
+                  col = c("blue","#d62828"),
+                  xlab = "Sexe",
+                  ylab = "Patients",
+                  las = 1,
+                  main = "Repartition des patients selon la presence d'une maladie cardiovasculaire \n et les douleurs thoraciques ",
+                  ylim = c(0,150),
+                  cex.main = 1.2,
+                  cex.lab = 1.2
+)
+legend("top", legend = levels(data$target), fill = c("blue","#d62828"), title = "Maladie cardiovasculaire",horiz = TRUE)
+text(x = graph5, y = table(data$target, data$cp) +7, labels = as.character(table(data$target,data$cp)), cex = 1.1,font = 3 )
+
+### Boite a moustache croissee 
