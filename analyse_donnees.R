@@ -260,3 +260,100 @@ legend("top", legend = levels(data$target), fill = c("blue","#d62828"), title = 
 text(x = graph5, y = table(data$target, data$cp) +7, labels = as.character(table(data$target,data$cp)), cex = 1.1,font = 3 )
 
 ### Boite a moustache croissee 
+
+boxplot(data$age~data$target,
+        main= "Boite a moustache de la population selon l'age et la presence \n de la maladie cardiovasculaire",
+        xlab = "Presence d'une maladie cardiovasculaiew",
+        ylab = "Age",
+        col="Yellow",
+        las = 1,
+        ylim = c(20,80),
+        cex.main = 1.2,
+        cex.lan = 1.2)
+
+
+
+
+
+boxplot(data$trestbps~data$target,
+        main= "Boite a moustache de la population selon la tension arterielle au repos et la presence \n de la maladie cardiovasculaire",
+        xlab = "Presence d'une maladie cardiovasculaiew",
+        ylab = "Tension arterielle au repos",
+        col="Yellow",
+        las = 1,
+        ylim = c(80,200),
+        cex.main = 1.2,
+        cex.lan = 1.2)
+
+
+### Realiser des tests d'hypotheses/ tests statistiques
+
+#Calcul des pourcentages 
+table(data$Sex, data$target)
+round(prop.table(table(data$Sex, data$target), margin = 1),4 )* 100
+
+round(prop.table(table(data$cp, data$target), margin = 1),4 )* 100
+round(prop.table(table(data$fbs, data$target), margin = 1),4 )* 100
+round(prop.table(table(data$restecg, data$target), margin = 1),4 )* 100
+round(prop.table(table(data$exang, data$target), margin = 1),4 )* 100
+round(prop.table(table(data$slope, data$target), margin = 1),4 )* 100
+round(prop.table(table(data$ca, data$target), margin = 1),4 )* 100
+round(prop.table(table(data$thal, data$target), margin = 1),4 )* 100
+
+
+## Test du khi-Deux(Uniquement sur les variables qualitatives)
+
+## H0: Les deux variables sont independantes (si la p-value > 0,05)
+## H1: les deux variables sont dependantes (si la p-value < 0,05)
+
+chisq.test(data$Sex, data$target)
+chisq.test(data$cp, data$target)
+chisq.test(data$fbs, data$target)
+chisq.test(data$restecg, data$target)
+chisq.test(data$exang, data$target)
+chisq.test(data$slope, data$target)
+chisq.test(data$ca, data$target)
+chisq.test(data$thal, data$target)
+
+## Moyennes conditionnelles 
+tapply(data$age, data$target, mean)
+tapply(data$trestbps, data$target, mean)
+tapply(data$chol, data$target, mean)
+tapply(data$thalach, data$target, mean)
+tapply(data$oldpeak, data$target, mean)
+
+
+# Test de shapiro- wilk
+### H0: L'echantillon suit une distribution normale (si p-value >0,05)
+### H1: L'echantillon ne suis pas une distribution normale (si p-value < 0,05)
+
+install.packages("dplyr")
+library(dplyr)
+
+shapiro.test(filter(data, target == "Oui")$age)# H1
+shapiro.test(filter(data, target == "Oui")$trestbps) # H1
+shapiro.test(filter(data, target == "Oui")$chol) # H0
+shapiro.test(filter(data, target == "Oui")$thalach) # H0
+shapiro.test(filter(data, target == "Oui")$oldpeak) # H1
+
+
+## Test de Mann-Whitney (Les variables qui ne suivent pas une distribution normale )
+
+### H0 : il n-y a pas de difference significative entre la moyenne des deux variables (si p-value >0,05)
+### H1 : il y' a une difference signifiactive entre la noyenne des deux variables (si p-value < 0,05)
+
+wilcox.test(data$age~data$target) # H1
+wilcox.test(data$trestbps~data$target) # H1
+wilcox.test(data$oldpeak~data$target) # H1 
+
+
+## Test de student (Les variables qui suivent une distribution normale )
+### H0 : il n-y a pas de difference significative entre la moyenne des deux variables (si p-value >0,05)
+### H1 : il y' a une difference signifiactive entre la noyenne des deux variables (si p-value < 0,05)
+
+t.test(data$chol~data$target) ## H0
+t.test(data$thalach~data$target) ## H1 
+
+
+
+
